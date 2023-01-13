@@ -1,78 +1,37 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-apply plugin: 'maven-publish'
-apply plugin: 'org.jetbrains.dokka'
-
 
 android {
-    compileSdkVersion 29
-    defaultConfig {
-        minSdkVersion 22
-        targetSdkVersion 29
-        versionCode 800
-        versionName "0.0.8"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    lintOptions {
-        abortOnError false
-    }
+	compileSdkVersion 29
+	defaultConfig {
+		minSdkVersion 22
+		targetSdkVersion 29
+		versionCode 800
+		versionName "0.0.8"
+	}
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+	lintOptions {
+		abortOnError false
+	}
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'org.apache.commons:commons-lang3:3.6'
-    implementation 'com.github.evotor:query-api:1.0.0'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+	implementation 'org.apache.commons:commons-lang3:3.6'
+	implementation 'com.github.evotor:query-api:1.0.0'
 }
 
 task sourceJar(type: Jar) {
-    classifier "sources"
-    from android.sourceSets.main.java.srcDirs
-}
-
-dokkaJavadoc.configure {
-    outputDirectory.set(file("$buildDir/javadoc"))
-}
-
-// build a jar with javadoc
-task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-    classifier = 'javadoc'
-    from dokkaJavadoc.outputDirectory
-}
-
-publishing {
-    publications {
-
-        mavenKotlin(MavenPublication) {
-            groupId 'ru.evotor'
-            artifactId "egais-api"
-            version "0.0.121-dev"
-            artifact(sourceJar)
-            artifact(javadocJar)
-            artifact "${project.buildDir}/outputs/aar/${project.archivesBaseName}-release.aar"
-
-            //generate pom nodes for dependencies
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-                configurations.implementation.allDependencies.each { dependency ->
-                    if (dependency.group) {
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', dependency.group)
-                        dependencyNode.appendNode('artifactId', dependency.name)
-                        dependencyNode.appendNode('version', dependency.version)
-                    }
-                }
-            }
-        }
-    }
+	classifier "sources"
+	from android.sourceSets.main.java.srcDirs
 }

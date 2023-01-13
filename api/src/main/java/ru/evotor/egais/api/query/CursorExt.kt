@@ -22,18 +22,22 @@ internal fun Cursor.createProductInfo(): ProductInfo {
     val columnIndexUnitType = this.getColumnIndex(ProductInfoContract.COLUMN_UNIT_TYPE)
 
     return ProductInfo(
-            ProductType.valueOf(this.getString(columnIndexType)),
-            this.getString(columnIndexFullName),
-            this.getString(columnIndexShortName),
-            this.getString(columnIndexAlcCode),
-            this.getString(columnIndexCapacity),
-            this.getString(columnIndexAlcVolume),
-            this.getString(columnIndexProducerId),
-            this.getString(columnIndexImporterId),
-            this.getString(columnIndexProductVCode),
-            takeIf { columnIndexUnitType != -1 }?.let {
-                UnitType.valueOf(this.getString(columnIndexUnitType))
+        this.getString(columnIndexType)?.let {
+            ProductType.valueOf(it)
+        } ?: ProductType.AP,
+        this.getString(columnIndexFullName),
+        this.getString(columnIndexShortName),
+        this.getString(columnIndexAlcCode) ?: "",
+        this.getString(columnIndexCapacity),
+        this.getString(columnIndexAlcVolume),
+        this.getString(columnIndexProducerId),
+        this.getString(columnIndexImporterId),
+        this.getString(columnIndexProductVCode),
+        takeIf { columnIndexUnitType != -1 }?.let {
+            this.getString(columnIndexUnitType)?.let {
+                UnitType.valueOf(it)
             } ?: UnitType.PACKED
+        } ?: UnitType.PACKED
     )
 }
 
