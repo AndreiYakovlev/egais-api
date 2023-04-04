@@ -18,13 +18,13 @@ data class ProductInfo(
         @JvmField val type: ProductType,
         @JvmField val fullName: String?,
         @JvmField val shortName: String?,
-        @JvmField val alcCode: String,
+        @JvmField val alcCode: String?,
         @JvmField val capacity: String?,
         @JvmField val alcVolume: String?,
         @JvmField val producerId: String?,
         @JvmField val importerId: String?,
         @JvmField val productVCode: String?,
-        @JvmField val unitType: UnitType
+        @JvmField val unitType: UnitType?
 ) {
 
     companion object {
